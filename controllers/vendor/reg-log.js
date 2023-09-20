@@ -72,4 +72,47 @@ const Login = async (req, res) => {
   }
 };
 
-module.exports = { Register, Login };
+const updateVendorProfile = async(req,res)=>{
+
+    try{
+
+        const { profile } = req.body;
+          const { id: vendorId } = req.params;
+
+          const updateVendor = await VendorModel.findByIdAndUpdate(
+            { _id: vendorId },
+            req.body,
+            { new: true, runValidators: true }
+          );
+      
+          if (!updateVendor) {
+            return res
+              .status(StatusCodes.NOT_FOUND)
+              .json({ msg: `The vendor has not been found` });
+          }
+
+          const updateVendorObj = updateVendor.toObject();
+    delete updateVendorObj._id;
+    delete updateVendorObj.name;
+    delete updateVendorObj.email;
+    delete updateVendorObj.contact;
+    delete updateUserObj.password;
+
+    return res.status(StatusCodes.OK).json({
+      msg: "Your Profile has been updated Successfully",
+      updateVendorObj,
+    });
+
+
+
+    }
+    catch(err){
+
+        res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+
+    }
+}
+
+module.exports = { Register, Login,updateVendorProfile };
