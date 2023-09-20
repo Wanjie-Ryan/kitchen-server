@@ -72,26 +72,24 @@ const Login = async (req, res) => {
   }
 };
 
-const updateVendorProfile = async(req,res)=>{
+const updateVendorProfile = async (req, res) => {
+  try {
+    const { profile } = req.body;
+    const { id: vendorId } = req.params;
 
-    try{
+    const updateVendor = await VendorModel.findByIdAndUpdate(
+      { _id: vendorId },
+      req.body,
+      { new: true, runValidators: true }
+    );
 
-        const { profile } = req.body;
-          const { id: vendorId } = req.params;
+    if (!updateVendor) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: `The vendor has not been found` });
+    }
 
-          const updateVendor = await VendorModel.findByIdAndUpdate(
-            { _id: vendorId },
-            req.body,
-            { new: true, runValidators: true }
-          );
-      
-          if (!updateVendor) {
-            return res
-              .status(StatusCodes.NOT_FOUND)
-              .json({ msg: `The vendor has not been found` });
-          }
-
-          const updateVendorObj = updateVendor.toObject();
+    const updateVendorObj = updateVendor.toObject();
     delete updateVendorObj._id;
     delete updateVendorObj.name;
     delete updateVendorObj.email;
@@ -102,17 +100,11 @@ const updateVendorProfile = async(req,res)=>{
       msg: "Your Profile has been updated Successfully",
       updateVendorObj,
     });
-
-
-
-    }
-    catch(err){
-
-        res
+  } catch (err) {
+    res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
+  }
+};
 
-    }
-}
-
-module.exports = { Register, Login,updateVendorProfile };
+module.exports = { Register, Login, updateVendorProfile };
