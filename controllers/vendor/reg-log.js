@@ -26,64 +26,50 @@ const Register = async (req, res) => {
 };
 
 const Login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-    try{
+    if (!email || !password) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ msg: "Provide all the fields" });
+    }
 
-        const { email, password } = req.body;
+    const VendorEmail = await VendorModel.findOne({ email });
 
-        if (!email || !password) {
-          return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json({ msg: "Provide all the fields" });
-        }
+    if (!VendorEmail) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "The Email Provided cannot be found" });
+    }
 
-        const VendorEmail = await VendorModel.findOne({ email });
+    const correctPassword = await VendorEmail.checkpwd(password);
 
-        if (!VendorEmail) {
-          return res
-            .status(StatusCodes.NOT_FOUND)
-            .json({ msg: "The Email Provided cannot be found" });
-        }
+    if (!correctPassword) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "Incorrect password" });
+    }
 
-        const correctPassword = await VendorEmail.checkpwd(password);
+    const vendorLogin = VendorEmail.toObject();
+    delete vendorLogin.password;
+    delete vendorLogin.email;
+    delete vendorLogin.contact;
 
-        if (!correctPassword) {
-          return res
-            .status(StatusCodes.UNAUTHORIZED)
-            .json({ msg: "Incorrect password" });
-        }
+    const token = jwt.sign(
+      { vendorId: vendorLogin._id },
+      process.env.vendor_sec_key,
+      { expiresIn: "1d" }
+    );
 
-        const vendorLogin = VendorEmail.toObject()
-        delete vendorLogin.password
-        delete vendorLogin.email
-        delete vendorLogin.contact
-
-        const token = jwt.sign(
-            { vendorId: vendorLogin._id },
-            process.env.vendor_sec_key,
-            { expiresIn: "1d" }
-          );
-
-          return res
+    return res
       .status(StatusCodes.OK)
       .json({ msg: `Login Successful`, vendorLogin, vendorToken: token });
-
-
-
-
-
-    
-
-
-    }
-    catch(err){
-
-        res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ msg: "Something went wrong, please try again later" });
-    }
-
-    
+  } catch (err) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
 };
 
 module.exports = { Register, Login };
