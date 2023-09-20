@@ -28,7 +28,7 @@ app.use(cors());
 
 // ROUTES FOR THE VEDNORS
 
-app.use('/api/vendor', VendorRegLog)
+app.use('/api/vendor/auth', VendorRegLog)
 
 
 
