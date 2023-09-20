@@ -6,15 +6,34 @@ const bcrypt = require("bcryptjs");
 
 const Register = async(req,res)=>{
 
-    // try{
+    try{
+
+        const { name, email, contact, password } = req.body;
+
+        if (!name || !email || !contact  || !password) {
+            return res
+              .status(StatusCodes.BAD_REQUEST)
+              .json({ msg: "please fill all the fields" });
+          }
+
+          const newVendor =  await VendorModel.create(req.body)
+
+          return res
+          .status(StatusCodes.CREATED)
+          .json({ msg: "Vendor created successfully" });
 
 
-    // }
-    // catch(err){
 
-    // }
+    }
+    catch(err){
 
-    res.send('register')
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Something went wrong, try again later" });
+    }
+
+    
+
 }
 
 const Login = async(req,res)=>{
