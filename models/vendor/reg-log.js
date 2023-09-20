@@ -45,4 +45,24 @@ const vendorSchema = new mongoose.Schema({
 },{timestamps:true})
 
 
+vendorSchema.pre("save", async function (next) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+      next();
+    } catch (err) {
+      next(err);
+    }
+  });
+  
+  vendorSchema.methods.checkpwd = async function (candidatePassword) {
+    try {
+      const isMatch = await bcrypt.compare(candidatePassword, this.password);
+      return isMatch;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+
 module.exports = mongoose.model('Vendor', vendorSchema)
