@@ -9,7 +9,7 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 const connectionDB = require("./connection/connection");
-
+const VendorRegLog = require('./routes/vendor/reg-log')
 
 
 app.use(helmet());
@@ -24,6 +24,11 @@ app.use(
   })
 );
 app.use(cors());
+
+
+// ROUTES FOR THE VEDNORS
+
+app.use('/api/vendor', VendorRegLog)
 
 
 
