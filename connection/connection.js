@@ -1,10 +1,9 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-mongoose.set('strictQuery', false)
+mongoose.set("strictQuery", false);
 
-const connectDB =(url)=>{
+const connectDB = (url) => {
+  return mongoose.connect(url);
+};
 
-    return mongoose.connect(url)
-}
-
-module.exports = connectDB
+module.exports = connectDB;
