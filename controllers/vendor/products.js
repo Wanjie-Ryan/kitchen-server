@@ -41,4 +41,50 @@ const createProduct = async (req, res) => {
   }
 };
 
+const GetAllProducts = async(req,res)=>{
+
+    try{
+
+        const token = req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "You are not authorized to create a product" });
+    }
+
+    const decodedToken = jwt.verify(token, process.env.vendor_sec_key);
+    const vendorId = decodedToken.vendorId;
+
+    const OneVendor = await VendorModel.findById(vendorId);
+
+    if (!OneVendor) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Vendor does not exist,cannot proceed" });
+    }
+
+
+        const AllProducts = await ProductsModel.find({})
+
+        if(!AllProducts){
+            return res
+            .status(StatusCodes.NOT_FOUND)
+            .json({msg:"No products found"})
+        }
+
+        return res.status(StatusCodes.OK).json({msg:"The products found are"})
+
+
+    }
+
+    catch(err){
+
+        res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+
+    }
+}
+
 module.exports = { createProduct };
