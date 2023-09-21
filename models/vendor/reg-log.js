@@ -27,7 +27,7 @@ const vendorSchema = new mongoose.Schema(
 
     contact: {
       type: String,
-      required: [true, "contact of user is required"],
+      required: [true, "contact of vendor is required"],
       unique: true,
       match: [
         /^\+\d{12}$/,

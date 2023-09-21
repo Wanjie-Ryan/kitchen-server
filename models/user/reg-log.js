@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
 
     name: {
       type: String,
-      required: [true, "name of vendor is required"],
+      required: [true, "name of user is required"],
     },
 
     email: {
@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-vendorSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) {
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -53,7 +53,7 @@ vendorSchema.pre("save", async function (next) {
   }
 });
 
-vendorSchema.methods.checkpwd = async function (candidatePassword) {
+userSchema.methods.checkpwd = async function (candidatePassword) {
   try {
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
@@ -62,4 +62,4 @@ vendorSchema.methods.checkpwd = async function (candidatePassword) {
   }
 };
 
-module.exports = mongoose.model("Vendor", vendorSchema);
+module.exports = mongoose.model("User", userSchema);
