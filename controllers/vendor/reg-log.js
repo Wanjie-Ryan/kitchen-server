@@ -78,7 +78,7 @@ const updateVendorProfile = async (req, res) => {
     const { id: vendorId } = req.params;
 
     const updateVendor = await VendorModel.findByIdAndUpdate(
-      { _id: vendorId },
+      { _id:vendorId },
       req.body,
       { new: true, runValidators: true }
     );
@@ -94,13 +94,14 @@ const updateVendorProfile = async (req, res) => {
     delete updateVendorObj.name;
     delete updateVendorObj.email;
     delete updateVendorObj.contact;
-    delete updateUserObj.password;
+    delete updateVendorObj.password;
 
     return res.status(StatusCodes.OK).json({
       msg: "Your Profile has been updated Successfully",
       updateVendorObj,
     });
   } catch (err) {
+    // console.log(err)
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
