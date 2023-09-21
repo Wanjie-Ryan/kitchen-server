@@ -65,15 +65,14 @@ const GetAllProducts = async(req,res)=>{
     }
 
 
-        const AllProducts = await ProductsModel.find({})
-
-        if(!AllProducts){
-            return res
-            .status(StatusCodes.NOT_FOUND)
-            .json({msg:"No products found"})
+        const AllProducts = await ProductsModel.find({createdBy:OneVendor._id})
+        if(!AllProducts || AllProducts.length === 0){
+            return res.status(StatusCodes.NOT_FOUND).json({msg:'You have not yet created a product'})
         }
 
-        return res.status(StatusCodes.OK).json({msg:"The products found are"})
+        
+
+        return res.status(StatusCodes.OK).json({msg:"The products found are", AllProducts})
 
 
     }
@@ -87,4 +86,4 @@ const GetAllProducts = async(req,res)=>{
     }
 }
 
-module.exports = { createProduct };
+module.exports = { createProduct,GetAllProducts };
