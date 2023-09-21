@@ -126,12 +126,9 @@ const updateProduct = async (req, res) => {
   }
 };
 
-const deleteProduct = async(req,res)=>{
-
-    try{
-
-        
-        const token = req.headers.authorization.split(" ")[1];
+const deleteProduct = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return res
@@ -149,31 +146,29 @@ const deleteProduct = async(req,res)=>{
         .status(StatusCodes.NOT_FOUND)
         .json({ msg: "Vendor does not exist,cannot proceed" });
     }
-    
-    const {id:productId} = req.params
+
+    const { id: productId } = req.params;
 
     const deleteProduct = await ProductsModel.findByIdAndDelete(productId);
 
-    if(!deleteProduct){
-        return res.status(StatusCodes.NOT_FOUND).json({msg:'Product was not found'})
+    if (!deleteProduct) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Product was not found" });
     }
 
     return res
-    .status(StatusCodes.OK)
-    .json({ msg: `Product was deleted successfully` });
-
-
-
-
-
-    }
-    catch(err){
-
-        res
+      .status(StatusCodes.OK)
+      .json({ msg: `Product was deleted successfully` });
+  } catch (err) {
+    res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
-
-
-    }
-}
-module.exports = { createProduct, GetAllProducts, updateProduct,deleteProduct };
+  }
+};
+module.exports = {
+  createProduct,
+  GetAllProducts,
+  updateProduct,
+  deleteProduct,
+};
