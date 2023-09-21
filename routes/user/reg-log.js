@@ -9,6 +9,6 @@ const UserAuthMiddleware = require("../../middleware/usermw");
 
 router.route("/register").post(Register);
 router.route("/login").post(Login);
-router.route("/updateuserprofile/:id").patch( updateUserProfile);
+router.route("/updateuserprofile/:id").patch(UserAuthMiddleware, updateUserProfile);
 
 module.exports = router;
