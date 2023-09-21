@@ -9,8 +9,14 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 const connectionDB = require("./connection/connection");
+
+// IMPORT FOR VENDORS
 const VendorRegLog = require('./routes/vendor/reg-log')
 const Products = require('./routes/vendor/products')
+
+//IMPORT FOR USERS
+
+const userRegLog =  require('./routes/user/reg-log')
 
 
 app.use(helmet());
@@ -31,6 +37,10 @@ app.use(cors());
 
 app.use('/api/vendor/auth', VendorRegLog)
 app.use('/api/vendor/products', Products)
+
+//ROUTES FOR THE USERS
+
+app.use('/api/user/auth', userRegLog)
 
 
 

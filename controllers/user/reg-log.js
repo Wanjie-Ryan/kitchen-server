@@ -78,7 +78,7 @@ const updateUserProfile = async (req, res) => {
     const { id: userId } = req.params;
 
     const updateUser = await userModel.findByIdAndUpdate(
-      { _id:userId },
+      { _id: userId },
       req.body,
       { new: true, runValidators: true }
     );
