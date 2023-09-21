@@ -10,6 +10,7 @@ require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 const connectionDB = require("./connection/connection");
 const VendorRegLog = require('./routes/vendor/reg-log')
+const Products = require('./routes/vendor/products')
 
 
 app.use(helmet());
@@ -29,6 +30,7 @@ app.use(cors());
 // ROUTES FOR THE VEDNORS
 
 app.use('/api/vendor/auth', VendorRegLog)
+app.use('/api/vendor/products', Products)
 
 
 
