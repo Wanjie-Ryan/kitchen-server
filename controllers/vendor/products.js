@@ -125,4 +125,55 @@ const updateProduct = async (req, res) => {
       .json({ msg: "Something went wrong, please try again later" });
   }
 };
-module.exports = { createProduct, GetAllProducts, updateProduct };
+
+const deleteProduct = async(req,res)=>{
+
+    try{
+
+        
+        const token = req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "You are not authorized to delete a product" });
+    }
+
+    const decodedToken = jwt.verify(token, process.env.vendor_sec_key);
+    const vendorId = decodedToken.vendorId;
+
+    const OneVendor = await VendorModel.findById(vendorId);
+
+    if (!OneVendor) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Vendor does not exist,cannot proceed" });
+    }
+    
+    const {id:productId} = req.params
+
+    const deleteProduct = await ProductsModel.findByIdAndDelete(productId);
+
+    if(!deleteProduct){
+        return res.status(StatusCodes.NOT_FOUND).json({msg:'Product was not found'})
+    }
+
+    return res
+    .status(StatusCodes.OK)
+    .json({ msg: `Product was deleted successfully` });
+
+
+
+
+
+    }
+    catch(err){
+
+        res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+
+
+    }
+}
+module.exports = { createProduct, GetAllProducts, updateProduct,deleteProduct };
