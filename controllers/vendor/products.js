@@ -41,11 +41,9 @@ const createProduct = async (req, res) => {
   }
 };
 
-const GetAllProducts = async(req,res)=>{
-
-    try{
-
-        const token = req.headers.authorization.split(" ")[1];
+const GetAllProducts = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
       return res
@@ -64,26 +62,21 @@ const GetAllProducts = async(req,res)=>{
         .json({ msg: "Vendor does not exist,cannot proceed" });
     }
 
-
-        const AllProducts = await ProductsModel.find({createdBy:OneVendor._id})
-        if(!AllProducts || AllProducts.length === 0){
-            return res.status(StatusCodes.NOT_FOUND).json({msg:'You have not yet created a product'})
-        }
-
-        
-
-        return res.status(StatusCodes.OK).json({msg:"The products found are", AllProducts})
-
-
+    const AllProducts = await ProductsModel.find({ createdBy: OneVendor._id });
+    if (!AllProducts || AllProducts.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "You have not yet created a product" });
     }
 
-    catch(err){
-
-        res
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "The products found are", AllProducts });
+  } catch (err) {
+    res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
+  }
+};
 
-    }
-}
-
-module.exports = { createProduct,GetAllProducts };
+module.exports = { createProduct, GetAllProducts };
