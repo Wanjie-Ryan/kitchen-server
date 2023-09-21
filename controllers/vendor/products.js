@@ -79,59 +79,50 @@ const GetAllProducts = async (req, res) => {
   }
 };
 
-
 const updateProduct = async (req, res) => {
+  try {
+    const { productData } = req.body;
 
-    try{
+    const token = req.headers.authorization.split(" ")[1];
 
-        const { productData } = req.body;
-
-        const token = req.headers.authorization.split(" ")[1];
-
-        if (!token) {
-            return res
-            .status(StatusCodes.UNAUTHORIZED)
-            .json({ msg: "You are not authorized to update a product" });
-        }
-
-        const decodedToken = jwt.verify(token, process.env.vendor_sec_key);
-        const vendorId = decodedToken.vendorId;
-
-        const OneVendor = await VendorModel.findById(vendorId);
-
-        if (!OneVendor) {
-            return res
-            .status(StatusCodes.NOT_FOUND)
-            .json({ msg: "Vendor does not exist,cannot proceed" });
-        }
-
-        const OneProduct = await ProductsModel.findById(req.params.id);
-
-        if (!OneProduct) {
-            return res
-            .status(StatusCodes.NOT_FOUND)
-            .json({ msg: "Product does not exist,cannot proceed" });
-        }
-
-        const updatedProduct = await ProductsModel.findByIdAndUpdate(req.params.id,productData,{new:true,})
-
-        return res
-        .status(StatusCodes.OK)
-        .json({ msg: "The product was updated successfully", updatedProduct });
-
-
-
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "You are not authorized to update a product" });
     }
 
-    catch(err){
+    const decodedToken = jwt.verify(token, process.env.vendor_sec_key);
+    const vendorId = decodedToken.vendorId;
 
-        res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ msg: "Something went wrong, please try again later" });
+    const OneVendor = await VendorModel.findById(vendorId);
 
+    if (!OneVendor) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Vendor does not exist,cannot proceed" });
     }
 
+    const OneProduct = await ProductsModel.findById(req.params.id);
 
+    if (!OneProduct) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Product does not exist,cannot proceed" });
+    }
 
-}
-module.exports = { createProduct, GetAllProducts,updateProduct };
+    const updatedProduct = await ProductsModel.findByIdAndUpdate(
+      req.params.id,
+      productData,
+      { new: true }
+    );
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "The product was updated successfully", updatedProduct });
+  } catch (err) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+module.exports = { createProduct, GetAllProducts, updateProduct };
