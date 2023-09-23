@@ -17,6 +17,7 @@ const Products = require('./routes/vendor/products')
 //IMPORT FOR USERS
 
 const userRegLog =  require('./routes/user/reg-log')
+const UserProducts = require('./routes/user/products')
 
 
 app.use(helmet());
@@ -41,7 +42,7 @@ app.use('/api/vendor/products', Products)
 //ROUTES FOR THE USERS
 
 app.use('/api/user/auth', userRegLog)
-
+app.use('/api/user/products', UserProducts)
 
 
 

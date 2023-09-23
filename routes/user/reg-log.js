@@ -5,7 +5,7 @@ const {
   Login,
   updateUserProfile,
 } = require("../../controllers/user/reg-log");
-const UserAuthMiddleware = require("../../middleware/usermw");
+const {UserAuthMiddleware} = require("../../middleware/usermw");
 
 router.route("/register").post(Register);
 router.route("/login").post(Login);

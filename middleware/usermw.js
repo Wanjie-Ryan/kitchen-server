@@ -1,6 +1,17 @@
 const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 
+const PublicAccess = async (req, res, next) => {
+  const allowedRoutes = ["/api/user/products/userproducts"];
+  if (allowedRoutes.includes(req.originalUrl)) {
+    return next();
+  }
+
+  return res
+    .status(StatusCodes.UNAUTHORIZED)
+    .json({ msg: "Access Denied. Authentication required" });
+};
+
 const UserAuthMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -25,4 +36,4 @@ const UserAuthMiddleware = async (req, res, next) => {
       .send("Not authorized to access this route");
   }
 };
-module.exports = UserAuthMiddleware;
+module.exports = { PublicAccess, UserAuthMiddleware };
