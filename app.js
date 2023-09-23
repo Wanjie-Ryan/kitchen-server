@@ -11,14 +11,13 @@ const { StatusCodes } = require("http-status-codes");
 const connectionDB = require("./connection/connection");
 
 // IMPORT FOR VENDORS
-const VendorRegLog = require('./routes/vendor/reg-log')
-const Products = require('./routes/vendor/products')
+const VendorRegLog = require("./routes/vendor/reg-log");
+const Products = require("./routes/vendor/products");
 
 //IMPORT FOR USERS
 
-const userRegLog =  require('./routes/user/reg-log')
-const UserProducts = require('./routes/user/products')
-
+const userRegLog = require("./routes/user/reg-log");
+const UserProducts = require("./routes/user/products");
 
 app.use(helmet());
 app.use(xss());
@@ -33,42 +32,34 @@ app.use(
 );
 app.use(cors());
 
-
 // ROUTES FOR THE VEDNORS
 
-app.use('/api/vendor/auth', VendorRegLog)
-app.use('/api/vendor/products', Products)
+app.use("/api/vendor/auth", VendorRegLog);
+app.use("/api/vendor/products", Products);
 
 //ROUTES FOR THE USERS
 
-app.use('/api/user/auth', userRegLog)
-app.use('/api/user/products', UserProducts)
-
-
-
+app.use("/api/user/auth", userRegLog);
+app.use("/api/user/products", UserProducts);
 
 app.get("/wake-up", (req, res) => {
-    res.json({
-      responseType: "success",
-      message: "Server is awake",
-    });
+  res.json({
+    responseType: "success",
+    message: "Server is awake",
   });
+});
 
+const DBConnection = async () => {
+  try {
+    await connectionDB(process.env.mongo_url);
 
-  const DBConnection = async () => {
-    try {
-      await connectionDB(process.env.mongo_url);
-  
-      app.listen(port, () => {
-        console.log(`server is running on port, ${port}`);
-      });
-    } catch (err) {
-      console.log(err);
-      process.exit(1);
-    }
-  };
-  
-  DBConnection();
+    app.listen(port, () => {
+      console.log(`server is running on port, ${port}`);
+    });
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
 
-
-
+DBConnection();
