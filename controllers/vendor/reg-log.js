@@ -108,4 +108,22 @@ const updateVendorProfile = async (req, res) => {
   }
 };
 
-module.exports = { Register, Login, updateVendorProfile };
+const verifyToken = async (req, res, next) => {
+  try {
+    if (req.headers.authorization) {
+      const authHeader = req.headers.authorization;
+      const token = authHeader.replace("Bearer ", "");
+      const decoded = jwt.verify(token, process.env.vendor_sec_key);
+      req.token = decoded;
+      res.json({ type: "success" });
+      // next()
+    } else {
+      res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Token is bad" });
+    }
+  } catch (err) {
+    // res.json({ type: 'error', message: 'Please authenticate', details: err })
+    return res.status(StatusCodes.UNAUTHORIZED).json({ msg: "Invalid token" });
+  }
+};
+
+module.exports = { Register, Login, updateVendorProfile,verifyToken };
