@@ -108,6 +108,53 @@ const updateVendorProfile = async (req, res) => {
   }
 };
 
+const getSingleVendor = async(req,res)=>{
+
+
+  try{
+
+    const {id:vendorId} = req.params
+
+    const getVendor = await VendorModel.findById(vendorId)
+
+    if(getVendor.length === 0){
+
+      return res.status(StatusCodes.NOT_FOUND).json({msg:'Vendor cannot be found'})
+
+
+    }
+
+    const VendorObj = getVendor.toObject();
+    delete VendorObj._id
+    delete VendorObj.email
+    delete VendorObj.password
+    delete VendorObj.createdAt
+    delete VendorObj.updatedAt
+    delete VendorObj.profile
+
+
+
+
+
+    res.status(StatusCodes.OK).json({msg:'Vendor Found is:',VendorObj})
+
+
+
+
+  }
+
+  catch(err){
+    console.log(err)
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+ 
+  }
+}
+
+
+
+
 const verifyToken = async (req, res, next) => {
   try {
     if (req.headers.authorization) {
@@ -126,4 +173,4 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-module.exports = { Register, Login, updateVendorProfile,verifyToken };
+module.exports = { Register, Login, updateVendorProfile,verifyToken,getSingleVendor };
