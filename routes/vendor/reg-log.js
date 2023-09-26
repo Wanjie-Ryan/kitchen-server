@@ -16,6 +16,6 @@ router
   .route("/updatevendorprofile/:id")
   .patch(VendorAuthMiddleware, updateVendorProfile);
 router.route("/verify").get(VendorAuthMiddleware, verifyToken);
-router.route("/singleVendor/:id").get(getSingleVendor);
+router.route("/singleVendor/:id").get(UserAuthMiddleware,getSingleVendor);
 
 module.exports = router;
