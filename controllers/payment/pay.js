@@ -23,13 +23,13 @@ const createPayment = async (req, res) => {
       transaction_reference,
       transaction_code,
     });
-    console.log(newPayment);
+    // console.log(newPayment);
 
     return res
       .status(StatusCodes.OK)
       .json({ msg: "Payment has been received successfully", newPayment });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
