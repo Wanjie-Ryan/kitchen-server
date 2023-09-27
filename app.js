@@ -19,6 +19,11 @@ const Products = require("./routes/vendor/products");
 const userRegLog = require("./routes/user/reg-log");
 const UserProducts = require("./routes/user/products");
 
+
+//IMPORT FOR PAYMENTS
+
+const payments = require('./routes/payment/pay')
+
 app.use(helmet());
 app.use(xss());
 app.use(cookie());
@@ -41,6 +46,10 @@ app.use("/api/vendor/products", Products);
 
 app.use("/api/user/auth", userRegLog);
 app.use("/api/user/products", UserProducts);
+
+//ROUTES FOR PAYMENTS
+
+app.use('/api/user/payments', payments)
 
 app.get("/wake-up", (req, res) => {
   res.json({
