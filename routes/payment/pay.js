@@ -1,13 +1,12 @@
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 const { UserAuthMiddleware } = require("../../middleware/usermw");
+const {
+  createPayment,
+  getAllPayments,
+} = require("../../controllers/payment/pay");
 
+router.route("/createpayment").post(createPayment);
+router.route("/latestpayments").get(UserAuthMiddleware, getAllPayments);
 
-
-router.route('').post
-
-
-
-
-
-module.exports = router
+module.exports = router;

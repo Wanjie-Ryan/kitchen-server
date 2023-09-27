@@ -48,7 +48,7 @@ app.use("/api/user/products", UserProducts);
 
 //ROUTES FOR PAYMENTS
 
-app.use("/api/user/payments", payments);
+app.use("/api/chpter", payments);
 
 app.get("/wake-up", (req, res) => {
   res.json({

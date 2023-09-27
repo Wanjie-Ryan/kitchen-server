@@ -68,7 +68,7 @@ const getAllPayments = async (req, res) => {
 
     return res
       .status(StatusCodes.OK)
-      .json({ msg: "Latest Payment is:, latestPayment" });
+      .json({ msg: "Latest Payment is:", latestPayment });
   } catch (err) {
     console.log(err);
     res
