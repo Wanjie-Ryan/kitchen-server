@@ -121,7 +121,7 @@ const getSingleVendor = async (req, res) => {
     }
 
     const VendorObj = getVendor.toObject();
-    delete VendorObj._id;
+    // delete VendorObj._id;
     delete VendorObj.email;
     delete VendorObj.password;
     delete VendorObj.createdAt;
