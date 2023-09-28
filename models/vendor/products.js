@@ -24,6 +24,12 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, "product quantity is required"],
     },
+    boughtBy:{
+
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+
+    }
   },
   { timestamps: true }
 );

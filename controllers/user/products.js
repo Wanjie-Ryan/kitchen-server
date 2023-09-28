@@ -44,4 +44,11 @@ const GetSingleProduct = async (req, res) => {
   }
 };
 
-module.exports = { GetAllProducts, GetSingleProduct };
+const updateProduct = (req,res)=>{
+
+  res.send('hey there')
+
+
+}
+
+module.exports = { GetAllProducts, GetSingleProduct,updateProduct };
