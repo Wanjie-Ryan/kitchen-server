@@ -8,6 +8,8 @@ const {
 const { PublicAccess } = require("../../middleware/usermw");
 
 router.route("/userproducts").get(PublicAccess, GetAllProducts);
-router.route("usersingleproduct/:id").get(UserAuthMiddleware, GetSingleProduct);
+router
+  .route("/usersingleproduct/:id")
+  .get(UserAuthMiddleware, GetSingleProduct);
 
 module.exports = router;

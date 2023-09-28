@@ -21,9 +21,28 @@ const GetAllProducts = async (req, res) => {
   }
 };
 
-const GetSingleProduct = (req,res)=>{
+const GetSingleProduct = async(req,res)=>{
 
-  res.send('single product')
+  try{
+
+    const {id:productId} = req.params
+
+    const singleProduct = await ProductsModel.findById(productId)
+
+    if(!singleProduct){
+      return res.status(StatusCodes.NOT_FOUND).json({msg:"Product not found"})
+    }
+
+    return res.status(StatusCodes.OK).json({msg:"Product found is:",singleProduct})
+
+
+  }
+  catch(err){
+    // console.log(err)
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
 }
 
 module.exports = { GetAllProducts,GetSingleProduct };
