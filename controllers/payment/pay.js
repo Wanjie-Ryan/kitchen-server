@@ -48,7 +48,7 @@ const getAllPayments = async (req, res) => {
     const decodedToken = jwt.verify(token, process.env.user_sec_key);
 
     const userId = decodedToken.userId;
-    console.log(userId);
+    // console.log(userId);
 
     const findOneUser = await UserModel.findById(userId);
 
@@ -70,7 +70,7 @@ const getAllPayments = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: "Latest Payment is:", latestPayment });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
