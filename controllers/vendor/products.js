@@ -167,10 +167,8 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-const productsPurchased = async(req,res)=>{
-
-  try{
-
+const productsPurchased = async (req, res) => {
+  try {
     const token = req.headers.authorization.split(" ")[1];
 
     if (!token) {
@@ -197,33 +195,32 @@ const productsPurchased = async(req,res)=>{
         .json({ msg: "You have not yet created a product" });
     }
 
-    const purchasedProducts = await ProductsModel.find({boughtBy:{$exists:true, $ne:[]}})
+    const purchasedProducts = await ProductsModel.find({
+      boughtBy: { $exists: true, $ne: [] },
+    });
     //query looks for documents where the boughtby field exists and is not an empty array
 
-    if(!purchasedProducts || purchasedProducts.length ===0){
-      return res.status(StatusCodes.NOT_FOUND).json({msg:'Your products have not yet been purchased'})
+    if (!purchasedProducts || purchasedProducts.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Your products have not yet been purchased" });
     }
 
-    return res.status(StatusCodes.OK).json({msg:'The purchased products are:', purchasedProducts})
-
-
-
-   
-
-  }
-  catch(err){
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "The purchased products are:", purchasedProducts });
+  } catch (err) {
     // console.log(err)
     res
-    .status(StatusCodes.INTERNAL_SERVER_ERROR)
-    .json({ msg: "Something went wrong, please try again later" });
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
   }
-}
-
+};
 
 module.exports = {
   createProduct,
   GetAllProducts,
   updateProduct,
   deleteProduct,
-  productsPurchased
+  productsPurchased,
 };
