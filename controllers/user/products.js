@@ -72,7 +72,8 @@ const updateProduct = async (req, res) => {
 
     const updateProduct = await ProductsModel.findByIdAndUpdate(
       productId,
-      { quantity: quantity, boughtBy: OneUser._id },
+      { quantity: quantity, $push: { boughtBy: OneUser._id } },
+
       { new: true }
     );
 
