@@ -77,4 +77,43 @@ const getAllPayments = async (req, res) => {
   }
 };
 
-module.exports = { createPayment, getAllPayments };
+const getBuyers = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "You are not authorized" });
+    }
+
+    const decodedToken = jwt.verify(token, process.env.vendor_sec_key);
+    const vendorId = decodedToken.vendorId;
+
+    const OneVendor = await VendorModel.findById(vendorId);
+
+    if (!OneVendor) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Vendor does not exist" });
+    }
+
+    const { id: userId } = req.params;
+
+    const Buyers = await UserModel.findById(userId);
+    if (!Buyers) {
+      return res.status(StatusCodes.NOT_FOUND).json({ msg: "No buyer found" });
+    }
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Buyers found are:", Buyers });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
+
+module.exports = { createPayment, getAllPayments, getBuyers };
