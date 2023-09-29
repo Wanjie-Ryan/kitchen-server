@@ -45,12 +45,10 @@ const GetSingleProduct = async (req, res) => {
   }
 };
 
-const updateProduct = async(req,res)=>{
-
-  try{
-
-    const {quantity, boughtBy} = req.body
-    const {id:productId} = req.params
+const updateProduct = async (req, res) => {
+  try {
+    const { quantity, boughtBy } = req.body;
+    const { id: productId } = req.params;
 
     const token = req.headers.authorization.split(" ")[1];
 
@@ -71,32 +69,26 @@ const updateProduct = async(req,res)=>{
         .json({ msg: "User does not exist" });
     }
 
+    const updateProduct = await ProductsModel.findByIdAndUpdate(
+      productId,
+      { quantity: quantity, boughtBy: OneUser._id },
+      { new: true }
+    );
 
-    const updateProduct = await ProductsModel.findByIdAndUpdate(productId, {quantity:quantity, boughtBy:OneUser._id}, {new:true})
-
-    if(!updateProduct){
-      return res.status(StatusCodes.NOT_FOUND).json({msg:'Product not found'})
-
-
+    if (!updateProduct) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Product not found" });
     }
 
-    res.status(StatusCodes.OK).json({msg:'Updated Product:',updateProduct});
-
-
-
-
-  }
-  catch(err){
-
+    res.status(StatusCodes.OK).json({ msg: "Updated Product:", updateProduct });
+  } catch (err) {
     // console.log(err)
 
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
-
   }
+};
 
-
-}
-
-module.exports = { GetAllProducts, GetSingleProduct,updateProduct };
+module.exports = { GetAllProducts, GetSingleProduct, updateProduct };
