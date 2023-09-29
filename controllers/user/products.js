@@ -1,6 +1,7 @@
 const ProductsModel = require("../../models/vendor/products");
 const { StatusCodes } = require("http-status-codes");
 const UserModel = require("../../models/user/reg-log");
+const jwt = require("jsonwebtoken");
 
 const GetAllProducts = async (req, res) => {
   try {
