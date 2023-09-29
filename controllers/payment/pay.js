@@ -109,7 +109,7 @@ const getBuyers = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ msg: "Buyers found are:", Buyers });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
