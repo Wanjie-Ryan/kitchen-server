@@ -40,4 +40,33 @@ const createPayout = async(req,res)=>{
     }
 }
 
-module.exports ={createPayout}
+const getAllPayouts = async(req,res)=>{
+
+    try{
+
+        const token = req.headers.authorization.split(" ")[1];
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ msg: "You are not authorized to receive payment" });
+    }
+
+    const decodedToken = jwt.verify(token, process.env.vendor_sec_key);
+    const vendorId = decodedToken.vendorId;
+
+    const OneVendor = await VendorModel.findById(vendorId);
+
+    if (!OneVendor) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: "Vendor does not exist" });
+      }
+
+
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
+module.exports ={createPayout,getAllPayouts}
