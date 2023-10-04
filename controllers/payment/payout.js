@@ -17,18 +17,26 @@ const createPayout = async(req,res)=>{
           } = req.body;
 
           const newPayout = await PayOutModel.create({
-            Message,
-            Success,
-            Status,
-            Amount,
-            transaction_reference,
-            transaction_code,
+            message,
+            success,
+            status,
+            amount,
+            currency,
+            payout_reference,
           });
+          console.log(newPayout)
+
+          return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Payout has been received successfully", newPayout });
 
 
     }
     catch(err){
         console.log(err)
+        res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
     }
 }
 
