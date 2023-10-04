@@ -54,7 +54,7 @@ const Login = async (req, res) => {
     const vendorLogin = VendorEmail.toObject();
     delete vendorLogin.password;
     delete vendorLogin.email;
-    delete vendorLogin.contact;
+    // delete vendorLogin.contact;
 
     const token = jwt.sign(
       { vendorId: vendorLogin._id },
