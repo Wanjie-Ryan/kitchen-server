@@ -111,20 +111,16 @@ const getBuyers = async (req, res) => {
     const buyers = await UserModel.find({ _id: { $in: buyerIds } });
     // the in operator is used to find documents where the _id matches any value in the buyersid
 
-    
+    const buyerArray = buyers.map((buyer) => {
+      const buyerObject = buyer.toObject();
+      delete buyerObject.password;
+      delete buyerObject._id;
+      return buyerObject;
+    });
 
-    const buyerArray = buyers.map((buyer)=>{
-
-      const buyerObject = buyer.toObject()
-      delete buyerObject.password
-      delete buyerObject._id
-      return buyerObject
-
-    })
-
-    res.status(StatusCodes.OK).json({buyer: buyerArray });
+    res.status(StatusCodes.OK).json({ buyer: buyerArray });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
