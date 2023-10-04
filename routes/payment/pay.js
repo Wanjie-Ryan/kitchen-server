@@ -10,6 +10,6 @@ const {
 
 router.route("/createpayment").post(createPayment);
 router.route("/latestpayments").get(UserAuthMiddleware, getAllPayments);
-router.route('/getbuyers/:id').get(VendorAuthMiddleware,getBuyers)
+router.route('/getbuyers').get(VendorAuthMiddleware,getBuyers)
 
 module.exports = router;
