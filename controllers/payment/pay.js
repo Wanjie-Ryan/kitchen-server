@@ -98,16 +98,13 @@ const getBuyers = async (req, res) => {
         .json({ msg: "Vendor does not exist" });
     }
 
-    const { id: userId } = req.params;
+    const { buyerIds } = req.query;
 
-    const Buyers = await UserModel.findById(userId);
-    if (!Buyers) {
-      return res.status(StatusCodes.NOT_FOUND).json({ msg: "No buyer found" });
+    if(!buyerIds || !Array.isArray(buyerIds)){
+      return res.status(StatusCodes.BAD_REQUEST).json({msg:'Invalid Buyer Ids'})
     }
 
-    return res
-      .status(StatusCodes.OK)
-      .json({ msg: "Buyers found are:", Buyers });
+    
   } catch (err) {
     // console.log(err);
     res
