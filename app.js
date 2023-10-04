@@ -22,6 +22,7 @@ const UserProducts = require("./routes/user/products");
 //IMPORT FOR PAYMENTS
 
 const payments = require("./routes/payment/pay");
+const payouts = require("./routes/payment/payout");
 
 app.use(helmet());
 app.use(xss());
@@ -49,6 +50,7 @@ app.use("/api/user/products", UserProducts);
 //ROUTES FOR PAYMENTS
 
 app.use("/api/chpter", payments);
+app.use("/api/chpterpayouts", payouts);
 
 app.get("/wake-up", (req, res) => {
   res.json({
