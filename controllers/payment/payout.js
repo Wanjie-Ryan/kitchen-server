@@ -5,46 +5,35 @@ const { StatusCodes } = require("http-status-codes");
 const UserModel = require("../../models/user/reg-log");
 const VendorModel = require("../../models/vendor/reg-log");
 
-const createPayout = async(req,res)=>{
-    try{
-        const {
-            message,
-            success,
-            status,
-            amount,
-            currency,
-            payout_reference,
-          } = req.body;
+const createPayout = async (req, res) => {
+  try {
+    const { message, success, status, amount, currency, payout_reference } =
+      req.body;
 
-          const newPayout = await PayOutModel.create({
-            message,
-            success,
-            status,
-            amount,
-            currency,
-            payout_reference,
-          });
-          console.log(newPayout)
+    const newPayout = await PayOutModel.create({
+      message,
+      success,
+      status,
+      amount,
+      currency,
+      payout_reference,
+    });
+    console.log(newPayout);
 
-          return res
+    return res
       .status(StatusCodes.OK)
       .json({ msg: "Payout has been received successfully", newPayout });
-
-
-    }
-    catch(err){
-        console.log(err)
-        res
+  } catch (err) {
+    console.log(err);
+    res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
-    }
-}
+  }
+};
 
-const getAllPayouts = async(req,res)=>{
-
-    try{
-
-        const token = req.headers.authorization.split(" ")[1];
+const getAllPayouts = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
       return res
         .status(StatusCodes.UNAUTHORIZED)
@@ -57,34 +46,30 @@ const getAllPayouts = async(req,res)=>{
     const OneVendor = await VendorModel.findById(vendorId);
 
     if (!OneVendor) {
-        return res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ msg: "Vendor does not exist" });
-      }
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "Vendor does not exist" });
+    }
 
-      const latestPayout = await PayOutModel.findOne({})
+    const latestPayout = await PayOutModel.findOne({})
       .sort({ createdAt: -1 })
       .exec();
 
-      if (!latestPayout) {
-        return res
-          .status(StatusCodes.NOT_FOUND)
-          .json({ msg: "No payouts found" });
-      }
-
+    if (!latestPayout) {
       return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "No payouts found" });
+    }
+
+    return res
       .status(StatusCodes.OK)
       .json({ msg: "Latest Payout is:", latestPayout });
-  
+  } catch (err) {
+    console.log(err);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Something went wrong, please try again later" });
+  }
+};
 
-
-    }
-    catch(err){
-        console.log(err)
-        res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ msg: "Something went wrong, please try again later" });
-    }
-}
-
-module.exports ={createPayout,getAllPayouts}
+module.exports = { createPayout, getAllPayouts };
