@@ -14,7 +14,10 @@ const payOutSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    Amount: {
+    amount: {
+      type: String,
+    },
+    currency: {
       type: String,
     },
 
@@ -23,7 +26,6 @@ const payOutSchema = new mongoose.Schema(
       ref: "Vendor",
       required: true,
     },
-    
   },
   { timestamps: true }
 );
