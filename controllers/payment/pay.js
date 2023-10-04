@@ -3,7 +3,7 @@ const ProductsModel = require("../../models/vendor/products");
 const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 const UserModel = require("../../models/user/reg-log");
-
+const VendorModel = require("../../models/vendor/reg-log");
 const createPayment = async (req, res) => {
   try {
     const {
@@ -111,9 +111,20 @@ const getBuyers = async (req, res) => {
     const buyers = await UserModel.find({ _id: { $in: buyerIds } });
     // the in operator is used to find documents where the _id matches any value in the buyersid
 
-    res.status(StatusCodes.OK).json({ buyers });
+    
+
+    const buyerArray = buyers.map((buyer)=>{
+
+      const buyerObject = buyer.toObject()
+      delete buyerObject.password
+      delete buyerObject._id
+      return buyerObject
+
+    })
+
+    res.status(StatusCodes.OK).json({buyer: buyerArray });
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, please try again later" });
