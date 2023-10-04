@@ -62,10 +62,28 @@ const getAllPayouts = async(req,res)=>{
           .json({ msg: "Vendor does not exist" });
       }
 
+      const latestPayout = await PayOutModel.findOne({})
+      .sort({ createdAt: -1 })
+      .exec();
+
+      if (!latestPayout) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ msg: "No payouts found" });
+      }
+
+      return res
+      .status(StatusCodes.OK)
+      .json({ msg: "Latest Payout is:", latestPayout });
+  
+
 
     }
     catch(err){
         console.log(err)
+        res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ msg: "Something went wrong, please try again later" });
     }
 }
 
