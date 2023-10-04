@@ -99,10 +99,17 @@ const getBuyers = async (req, res) => {
     }
 
     const { buyerIds } = req.query;
+    //extracting buyerids from the query parameter
 
     if(!buyerIds || !Array.isArray(buyerIds)){
       return res.status(StatusCodes.BAD_REQUEST).json({msg:'Invalid Buyer Ids'})
     }
+    //check if buyerids exist and whether it is an array
+
+    const buyers = await UserModel.find({_id:{$in:buyerIds}})
+    // the in operator is used to find documents where the _id matches any value in the buyersid
+
+    res.status(StatusCodes.OK).json({buyers})
 
     
   } catch (err) {
