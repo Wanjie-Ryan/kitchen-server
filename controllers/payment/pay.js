@@ -114,7 +114,7 @@ const getBuyers = async (req, res) => {
     const buyerArray = buyers.map((buyer) => {
       const buyerObject = buyer.toObject();
       delete buyerObject.password;
-      delete buyerObject._id;
+      // delete buyerObject._id;
       return buyerObject;
     });
 
