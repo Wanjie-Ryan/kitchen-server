@@ -19,6 +19,7 @@ const Register = async (req, res) => {
       .status(StatusCodes.CREATED)
       .json({ msg: "Vendor created successfully" });
   } catch (err) {
+    // console.log(err)
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "Something went wrong, try again later" });

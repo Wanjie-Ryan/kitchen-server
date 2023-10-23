@@ -6,7 +6,7 @@ const {
   getAllPayouts,
 } = require("../../controllers/payment/payout");
 
-router.route("/createpayout").post(VendorAuthMiddleware, createPayout);
+router.route("/createpayout").post( createPayout);
 router.route("/getpayouts").get(VendorAuthMiddleware, getAllPayouts);
 
 module.exports = router;
