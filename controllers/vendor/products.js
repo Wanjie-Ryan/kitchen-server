@@ -1,4 +1,4 @@
-const ProductsModel = require("../../models/vendor/products");
+const ProductsModel = require("../../models/vendor/products")
 const VendorModel = require("../../models/vendor/reg-log");
 const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
