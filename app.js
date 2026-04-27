@@ -19,7 +19,7 @@ const Products = require("./routes/vendor/products");
 const userRegLog = require("./routes/user/reg-log");
 const UserProducts = require("./routes/user/products");
 
-//IMPORT FOR PAYMENT
+//IMPORT FOR PAYMENTs
 
 const payments = require("./routes/payment/pay");
 const payouts = require("./routes/payment/payout");
