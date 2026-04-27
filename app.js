@@ -10,7 +10,7 @@ require("dotenv").config();
 const { StatusCodes } = require("http-status-codes");
 const connectionDB = require("./connection/connection");
 
-// IMPORT FOR VENDOR
+// IMPORT FOR VENDORs
 const VendorRegLog = require("./routes/vendor/reg-log");
 const Products = require("./routes/vendor/products");
 
