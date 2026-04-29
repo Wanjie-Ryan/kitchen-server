@@ -14,7 +14,7 @@ const connectionDB = require("./connection/connection");
 const VendorRegLog = require("./routes/vendor/reg-log");
 const Products = require("./routes/vendor/products");
 
-//IMPORT FOR USER
+//IMPORT FOR USERs
 
 const userRegLog = require("./routes/user/reg-log");
 const UserProducts = require("./routes/user/products");
