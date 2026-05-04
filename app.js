@@ -42,7 +42,7 @@ app.use(cors());
 app.use("/api/vendor/auth", VendorRegLog);
 app.use("/api/vendor/products", Products);
 
-//ROUTES FOR THE USER
+//ROUTES FOR THE USERS
 
 app.use("/api/user/auth", userRegLog);
 app.use("/api/user/products", UserProducts);
