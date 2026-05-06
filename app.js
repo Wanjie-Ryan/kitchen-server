@@ -47,7 +47,7 @@ app.use("/api/vendor/products", Products);
 app.use("/api/user/auth", userRegLog);
 app.use("/api/user/products", UserProducts);
 
-//ROUTES FOR PAYMENTS
+//ROUTES FOR PAYMEN
 
 app.use("/api/chpter", payments);
 app.use("/api/chpterpayouts", payouts);
