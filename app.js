@@ -55,7 +55,7 @@ app.use("/api/chpterpayouts", payouts);
 app.get("/wake-up", (req, res) => {
   res.json({
     responseType: "success",
-    message: "Server is awake",
+    message: "Server  awake",
   });
 });
 
